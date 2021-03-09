@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+service YoloV5 {
+    rpc detect(Image) returns (DetectedObjects);
+}
+
+/*
+ * Image to analyse
+ * :param data: bytes of the image file
+ *              encoded in some image format
+ */
+message Image {
+    bytes data = 1;
+}
+
+/*
+ * Objects detected in the image
+ * :param objects: list of detected objects
+ */
+message DetectedObjects {
+    repeated DetectedObject objects = 1;
+}
+
+/*
+ * Message to represent a detected object
+ * :param class_name: predicted class for the object
+ * :param class_idx: index of the predicted class in
+ *                   the classes list
+ * :param p1: relative coordinates for p1 of the object
+ * :param p2: relative coordinates for p2 of the object
+ * :param conf: confidence in the prediction
+ */
+message DetectedObject {
+    string class_name = 1;
+    uint32 class_idx = 2;
+    Point p1 = 3;
+    Point p2 = 4;
+    double conf = 5;
+}
+
+/*
+ * Message to represent a point in the image using
+ * relative coordinates (all values between 0 and 1)
+ * :param x: x coordinate
+ * :param y: y coordinate
+ */
+message Point {
+    double x = 1;
+    double y = 2;
+}

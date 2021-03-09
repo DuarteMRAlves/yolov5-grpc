@@ -1,0 +1,9 @@
+grpcio==1.35.0
+grpcio-reflection==1.35.0
+matplotlib==3.3.4
+opencv-python-headless==4.5.1.48
+pandas==1.2.2
+Pillow==8.1.0
+protobuf==3.14.0
+seaborn==0.11.1
+torch==1.7.1
