@@ -27,7 +27,7 @@ RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ${PROTO_F
 # ----------------------------------
 # Builder to download model to cache
 # ----------------------------------
-FROM pytorch/pytorch:1.7.1-cuda11.0-cudnn8-runtime as cache_builder
+FROM ultralytics/yolov5:latest as cache_builder
 # Renew build args
 ARG USER
 ARG GROUP
@@ -35,21 +35,12 @@ ARG WORKSPACE
 ARG PROTO_FILE
 ARG SRC_DIR
 
-RUN apt-get update && apt-get install -y git
+WORKDIR ${WORKSPACE}/
 
 # Create non-privileged user to run
 RUN addgroup --system ${GROUP} && \
     adduser --system --ingroup ${GROUP} ${USER} && \
     chown -R ${USER}:${GROUP} ${WORKSPACE}
-
-COPY requirements.txt .
-
-RUN pip install --upgrade pip && \
-    # Install headless version of opencv-python for server usage
-    # Does not install graphical modules
-    # See https://github.com/opencv/opencv-python#installation-and-usage
-    pip install -r requirements.txt && \
-    rm requirements.txt
 
 # Copy script to load cache
 COPY --chown=${USER}:${GROUP} ${SRC_DIR}/load_cache.py .
@@ -57,14 +48,16 @@ COPY --chown=${USER}:${GROUP} ${SRC_DIR}/load_cache.py .
 # Change to non-privileged user so that cache files go to user home
 USER ${USER}
 
+ENV HOME=/home/${USER}
+
 # Import model to user cache
 RUN python load_cache.py
-
 
 # ------------------------------
 # Final image to run the service
 # ------------------------------
-FROM pytorch/pytorch:1.7.1-cuda11.0-cudnn8-runtime
+#FROM pytorch/pytorch:1.7.1-cuda11.0-cudnn8-runtime
+FROM ultralytics/yolov5:latest
 # Renew build args
 ARG USER
 ARG GROUP
@@ -72,19 +65,15 @@ ARG WORKSPACE
 ARG PROTO_FILE
 ARG SRC_DIR
 
+WORKDIR ${WORKSPACE}/
+
 # Create non-privileged user to run
 RUN addgroup --system ${GROUP} && \
     adduser --system --ingroup ${GROUP} ${USER} && \
     chown -R ${USER}:${GROUP} ${WORKSPACE}
 
-COPY requirements.txt .
-
 RUN pip install --upgrade pip && \
-    # Install headless version of opencv-python for server usage
-    # Does not install graphical modules
-    # See https://github.com/opencv/opencv-python#installation-and-usage
-    pip install -r requirements.txt && \
-    rm requirements.txt
+    pip install grpcio==1.35.0 grpcio-reflection==1.35.0
 
 # COPY .proto file to root to meet ai4eu specifications
 COPY --from=proto_builder --chown=${USER}:${GROUP} ${WORKSPACE}/${PROTO_FILE} /
@@ -103,6 +92,8 @@ COPY --chown=${USER}:${GROUP} ${SRC_DIR}/yolov5_service.py .
 
 # Change to non-privileged user
 USER ${USER}
+
+ENV HOME=/home/${USER}
 
 # Expose port 8061 according to ai4eu specifications
 EXPOSE 8061

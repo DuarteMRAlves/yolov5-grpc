@@ -40,7 +40,8 @@ class YoloV5Service(yolov5_service_grpc.YoloV5Servicer):
         img = PIL.Image.open(io.BytesIO(img_bytes))
         # Fix for PIL Images need file name in model
         img.filename = "file"
-        results = self.__model(img, size=640)
+        with torch.no_grad():
+            results = self.__model(img, size=640)
         return self.__build_detected_objects(results)
 
     def __build_detected_objects(self, results):
