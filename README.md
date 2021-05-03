@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project provides a [gRPC](https://grpc.io) service that interfaces with the [YoloV5 model](https://github.com/ultralytics/yolov5) for object detection.
+This project provides a [gRPC](https://grpc.io) service that interfaces with the [YoloV5 model](https://github.com/ultralytics/yolov5) by [Ultralytics](https://github.com/ultralytics) for object detection.
 It uses the YoloV5s model in order to detect the objects.
 
 <p align="center">
