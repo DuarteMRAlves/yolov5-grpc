@@ -26,14 +26,14 @@ $ docker run --rm -p 8061:8061 --ipc=host sipgisr/yolov5-grpc:latest
 ### Calling the service
 
 You can call the service with the defined gRPC method. 
-For an example, see the [test_image file](tests/test_image.py),
+For an example, see the [test_yolo file](tests/test_yolo.py),
 where we define a simple client that receives an image, calls the service and displays the results.
 
 You can run the test file by executing the following steps:
 
 * Ensure you have a working python installation with the packages grpcio, grpcio-tools, matplotlib and Pillow.
 
-* Download the [test_image.py](tests/test_image.py) and the [yolov5_service.proto](protos/yolov5_service.proto) files into a single directory.
+* Download the [test_yolo.py](tests/test_yolo.py) and the [yolov5_service.proto](protos/yolov5_service.proto) files into a single directory.
 
 * Compile the protobuf code necessary to interact with the service:
 
@@ -44,7 +44,7 @@ $ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. yolov5_serv
 * Run the test script *(Ensure the docker image is running locally at 8061)*:
 
 ```shell
-$ python test_image.py <path_to_some_image>
+$ python test_yolo.py <path_to_some_image>
 ```
 
 ## Service interface
