@@ -1,0 +1,6 @@
+Flask==2.0.1
+grpcio==1.38.0
+grpcio-reflection==1.38.0
+gunicorn==20.1.0
+Pillow==8.2.0
+protobuf==3.17.3

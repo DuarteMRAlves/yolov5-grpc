@@ -2,7 +2,7 @@ ARG USER=worker
 ARG GROUP=workers
 ARG WORKSPACE=/workspace
 ARG PROTO_FILE=yolov5_service.proto
-ARG SRC_DIR=src
+ARG SRC_DIR=yolov5
 
 # -------------------------------
 # Builder to generate python code
