@@ -24,7 +24,7 @@ _LEGEND_BORDER_SIZE = 2
 
 def colour_generator():
     while True:
-        yield from ['red', 'green']
+        yield from ['red', 'green', 'blue', 'cyan', 'yellow']
 
 
 class ObjectFrameDrawer:
@@ -37,8 +37,8 @@ class ObjectFrameDrawer:
         self.__font = PIL.ImageFont.load_default()
 
     def __call__(self, obj: vis.DetectedObject):
-        x_min, y_max = self.__point_coords(obj.p1)
-        x_max, y_min = self.__point_coords(obj.p2)
+        x_min, y_min = self.__point_coords(obj.p1)
+        x_max, y_max = self.__point_coords(obj.p2)
 
         outline_colour = next(self.__colour_gen)
 

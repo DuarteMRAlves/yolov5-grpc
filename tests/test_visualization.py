@@ -42,8 +42,8 @@ def send_image(stub, image_path):
     image = vis.Image(data=image_bytes)
     detected_objects = vis.DetectedObjects(
         objects=(
-            gen_detected_object('Object 1', 0.1, 0.5, 0.5, 0.1, 0.05),
-            gen_detected_object('Object 2', 0.6, 0.5, 0.7, 0.2, 0.98)
+            gen_detected_object('Object 1', 0.1, 0.1, 0.5, 0.5, 0.05),
+            gen_detected_object('Object 2', 0.6, 0.2, 0.7, 0.5, 0.98)
         )
     )
     request = vis.ImageWithObjects(
