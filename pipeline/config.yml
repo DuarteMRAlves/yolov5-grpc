@@ -1,0 +1,26 @@
+stages:
+  - name: "Source"
+    host: image-source
+    port: 8061
+    method: GetStream
+  - name: "Model"
+    host: yolo-model
+    port: 8061
+  - name: "Visualization"
+    host: yolo-visualization
+    port: 8061
+links:
+  - source:
+      stage: "Source"
+    target:
+      stage: "Model"
+  - source:
+      stage: "Source"
+    target:
+      stage: "Visualization"
+      field: "image"
+  - source:
+      stage: "Model"
+    target:
+      stage: "Visualization"
+      field: "objects"

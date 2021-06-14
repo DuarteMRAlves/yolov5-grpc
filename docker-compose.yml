@@ -1,0 +1,23 @@
+version: '3'
+services:
+  image-source:
+    image: sipgisr/image-source:latest
+    volumes:
+    - type: bind
+      source: ./images/
+      target: /workspace/images/
+  yolo-model:
+    image: sipgisr/yolov5-grpc
+  yolo-visualization:
+    image: sipgisr/yolo-visualization
+    ports:
+    - 8062:8062
+  orchestrator-node:
+    image: sipgisr/grpc-orchestrator:latest
+    volumes: 
+    - type: bind
+      source: ./pipeline
+      target: /app/config
+    environment:
+      CONFIG_FILE: "config/config.yml"
+    command: bash -c "/usr/bin/wait-for-all.sh config/urls.txt && java -cp '*' pipeline.orchestrator.App"

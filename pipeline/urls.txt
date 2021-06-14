@@ -1,0 +1,3 @@
+image-source:8061
+yolo-model:8061
+yolo-visualization:8061

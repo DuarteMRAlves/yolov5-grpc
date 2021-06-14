@@ -1,29 +1,48 @@
-# Yolov5 gRPC
+# Yolo Pipeline
 
 ## Overview
 
 This project provides a [gRPC](https://grpc.io) service that interfaces with the [YoloV5 model](https://github.com/ultralytics/yolov5) by [Ultralytics](https://github.com/ultralytics) for object detection.
 It uses the YoloV5s model in order to detect the objects.
 
+It also provides a visualization interface that can be used with in a pipeline to show the detected objects.
+
 <p align="center">
     <img 
-        src="assets/Bus-detection.png"
-        alt="YoloV5 Bus Image Detection Demo"
-        width="400">
+        src="assets/yolo-pipeline.gif" 
+        alt="Gif with a demo of the yolo pipeline" 
+        width="500">
 </p>
 
 ## Usage
 
-### Service Deployment
+### Pipeline Deployment
 
-The service can be deployed as a docker image by executing the following command 
-*(The first execution will take longer as the image will be downloaded)*:
+In order to start the pipeline you just need to execute the following steps:
+
+* Ensure you have a working [docker](https://docs.docker.com/get-started/) and docker-compose installation
+
+* Copy the [compose file](docker-compose.yml) and the [images](images) and 
+[pipeline](pipeline) directories to a directory on your computer.
+
+* Run the pipeline by executing the following command in the base directory
+    *(The first execution may take a while to start as the docker
+    images will be downloaded)*:
+```shell
+$ docker-compose up
+```
+
+* Open a browser window at http://localhost:8062 
+    *(You may need to wait and refresh until the first image is received)*
+
+### Standalone Deployment
+
+The yolo model can be deployed as a standalone docker image by executing the 
+following command *(The first execution will take longer as the image will be downloaded)*:
 
 ```shell
 $ docker run --rm -p 8061:8061 --ipc=host sipgisr/yolov5-grpc:latest
 ```
-
-### Calling the service
 
 You can call the service with the defined gRPC method. 
 For an example, see the [test_yolo file](tests/test_yolo.py),
